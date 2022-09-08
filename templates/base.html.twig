@@ -14,8 +14,8 @@
             <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
         {% endblock %}
     </head>
-    <body class="font-[Lato]">
-        <header class="shadow-md">
+    <body class="font-[Lato] bg-gray-100">
+        <header class="shadow-md bg-white">
             <div class="flex items-center justify-between max-w-4xl mx-auto px-3">
                 <div class="flex items-center">
                     <h1 class="font-bold text-gray-800 text-lg">
@@ -45,14 +45,16 @@
                 </div>
                 <div>
                     <a href="" class="flex items-center">
-                        <img class="w-8 h-8 rounded-full mr-3" src="https://randomuser.me/api/portraits/women/12.jpg" alt="Fiorella">
+                        <img class="w-8 h-8 rounded-full mr-3" src="{{ asset('users/fiorella.jpeg') }}" alt="Fiorella">
                         <span class="font-bold">Fiorella</span>
                     </a>
                 </div>
             </div>
         </header>
 
-        {% block body %}{% endblock %}
+        <div class="max-w-4xl mx-auto px-3 mt-8">
+            {% block body %}{% endblock %}
+        </div>
 
         <footer class="max-w-4xl mx-auto px-3 my-8 py-8 border-t">
             <p class="text-center text-gray-500">Copyright &copy; The Social Network.</p>
