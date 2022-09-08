@@ -33,8 +33,9 @@ class AppFixtures extends Fixture
         $user->setBirthday(new \DateTime('2019-12-31'));
         $user->setBiography('Une petite fille incroyable.');
         $manager->persist($user);
+        $this->addReference('user-1', $user);
 
-        for ($i = 0; $i <= 9; $i++) {
+        for ($i = 2; $i <= 10; $i++) {
             $gender = $faker->randomElement(['men', 'women']);
             $user = new User();
             $user->setEmail($faker->email());
@@ -43,7 +44,7 @@ class AppFixtures extends Fixture
             $user->setUsername($faker->userName());
             $filesystem->copy('https://randomuser.me/api/portraits/'.$gender.'/'.rand(1, 99).'.jpg', $publicDir.'/users/'.$user->getUsername().'.jpg');
             $user->setAvatar('users/'.$user->getUsername().'.jpg');
-            $user->setBirthday($faker->dateTime());
+            $user->setBirthday($faker->dateTime((date('Y') - 18).'-12-31'));
             $user->setBiography($faker->text());
             $manager->persist($user);
             $this->addReference('user-'.$i, $user);
@@ -52,7 +53,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i <= 50; $i++) {
             $post = new Post();
             $post->setContent($faker->text());
-            $post->setCreator($this->getReference('user-'.rand(0, 9)));
+            $post->setCreator($this->getReference('user-'.rand(1, 10)));
             $manager->persist($post);
         }
 

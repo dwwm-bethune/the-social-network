@@ -213,4 +213,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getAge()
+    {
+        return $this->birthday->diff(new \DateTime())->y;
+    }
 }
