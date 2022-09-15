@@ -51,14 +51,17 @@ class UserController extends AbstractController
     }
 
     #[Route('/membre/profil/modifier', name: 'app_user_edit')]
+    #[IsGranted('ROLE_USER')]
     public function edit(Request $request, EntityManagerInterface $manager, SluggerInterface $slugger): Response
     {
         $form = $this->createForm(EditProfileType::class, $user = $this->getUser());
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Pseudo
-            $user->setUsername($slugger->slug($user->getFirstname())->lower());
+            // Pseudo => Fio rella => fio-rella
+            if (!$user->getUsername()) {
+                $user->setUsername($slugger->slug($user->getFirstname())->lower());
+            }
 
             /** @var UploadedFile $file */
             $file = $form->get('avatarFile')->getData();
@@ -68,10 +71,10 @@ class UserController extends AbstractController
 
                 if ($user->getAvatar()) {
                     $filesystem = new Filesystem();
-                    $filesystem->remove($publicDir.'/users/'.$user->getAvatar());
+                    $filesystem->remove($publicDir.'/'.$user->getAvatar());
                 }
 
-                $file->move($publicDir.'/users', $avatar = $user->getUsername().'.'.$file->guessExtension());
+                $file->move($publicDir.'/users', $avatar = $user->getUsername().'-'.uniqid().'.'.$file->guessExtension());
                 $user->setAvatar('users/'.$avatar);
             }
 
